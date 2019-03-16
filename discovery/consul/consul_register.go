@@ -5,6 +5,7 @@ import (
 	"github.com/zeeshine/grpc/discovery"
 	"net"
 	"time"
+	"fmt"
 )
 
 type ConsulRegisterOptions struct {
