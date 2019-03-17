@@ -1,13 +1,12 @@
 package middleware
 
-type RequestDelegate func(ctx context.Context, req interface{}, info *grpc.UnaryServerInfo, handler grpc.UnaryHandler) (resp interface{}, err error)
+import (
+	"golang.org/x/net/context"
+	"google.golang.org/grpc"
+)
 
-type MiddlewareChain struct {
-	chain []RequestDelegate
-}
+// StreamRequestDelegate 流请求委托
+type StreamRequestDelegate func(srv interface{}, ss grpc.ServerStream, info *grpc.StreamServerInfo, handler grpc.StreamHandler) error
 
-func (mc *MiddlewareChain) Add(delegate RequestDelegate) {
-}
-
-func (mc *MiddlewareChain) Build() {
-}
+// UnaryRequestDelegate 请求委托
+type UnaryRequestDelegate func(ctx context.Context, req interface{}, info *grpc.UnaryServerInfo, handler grpc.UnaryHandler) (resp interface{}, err error)

@@ -3,6 +3,7 @@ module github.com/zeeshine/grpc
 go 1.12
 
 require (
+	github.com/grpc-ecosystem/go-grpc-middleware v1.0.0
 	github.com/hashicorp/consul v1.4.3
 	github.com/hashicorp/go-cleanhttp v0.5.0 // indirect
 	github.com/hashicorp/go-rootcerts v1.0.0 // indirect
