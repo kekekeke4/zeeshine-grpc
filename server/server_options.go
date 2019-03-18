@@ -3,9 +3,6 @@ package server
 import(
 	"time"
 	"google.golang.org/grpc"
-	// "github.com/zeeshine/grpc/discovery"
-	// "github.com/zeeshine/grpc/discovery/consul"
-	// "github.com/zeeshine/grpc/middleware"
 	"github.com/kekekeke4/zeeshine-grpc/discovery"
 	"github.com/kekekeke4/zeeshine-grpc/discovery/consul"
 	"github.com/kekekeke4/zeeshine-grpc/middleware"
