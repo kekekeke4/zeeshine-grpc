@@ -1,4 +1,4 @@
-module github.com/zeeshine/grpc
+module github.com/kekekeke4/zeeshine-grpc
 
 go 1.12
 

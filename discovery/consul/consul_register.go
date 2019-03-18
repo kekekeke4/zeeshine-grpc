@@ -2,7 +2,8 @@ package consul
 
 import (
 	"github.com/hashicorp/consul/api"
-	"github.com/zeeshine/grpc/discovery"
+	// "github.com/zeeshine/grpc/discovery"
+	"github.com/kekekeke4/zeeshine-grpc/discovery"
 	"net"
 	"time"
 	"fmt"
