@@ -5,7 +5,7 @@ import(
 	"google.golang.org/grpc"
 )
 
-type MiddlewareChainOptionsAction func(mco *MiddlewareChainOptions) (grpc.UnaryServerInterceptor,grpc.StreamServerInterceptor , error)
+type MiddlewareChainOptionsAction func(mco *MiddlewareChainOptions) (grpc.UnaryServerInterceptor,grpc.StreamServerInterceptor)
 
 type MiddlewareChainOptions struct{
 	unaryInters []grpc.UnaryServerInterceptor
@@ -18,27 +18,27 @@ func NewMiddlewareChainOptions() *MiddlewareChainOptions{
 	}
 }
 
-func (mo *MiddlewareChainOptions)AddUnary(delegate UnaryRequestDelegate) (*MiddlewareChainOptions, error){
+func (mo *MiddlewareChainOptions)AddUnary(delegate UnaryRequestDelegate) *MiddlewareChainOptions{
 	inter:=grpc.UnaryServerInterceptor(delegate)
 	mo.unaryInters = append(mo.unaryInters,inter)
-	return mo,nil
+	return mo
 }
 
-func (mo *MiddlewareChainOptions)AddStream(delegate StreamRequestDelegate) (*MiddlewareChainOptions, error){
+func (mo *MiddlewareChainOptions)AddStream(delegate StreamRequestDelegate) *MiddlewareChainOptions {
 	inter:=grpc.StreamServerInterceptor(delegate)
 	mo.streamInters = append(mo.streamInters,inter)
-	return mo,nil
+	return mo
 }
 
-func (mo *MiddlewareChainOptions)UsePaincMiddleware()(*MiddlewareChainOptions,error){
+func (mo *MiddlewareChainOptions)UsePaincMiddleware() *MiddlewareChainOptions {
 	return mo.AddUnary(handlePainc)
 }
 
-func (mo *MiddlewareChainOptions)UseOAuthMiddleware()(*MiddlewareChainOptions,error){
+func (mo *MiddlewareChainOptions)UseOAuthMiddleware() *MiddlewareChainOptions {
 	return mo.AddUnary(handleOAuth)
 }
 
-func(mo *MiddlewareChainOptions) Build()(grpc.UnaryServerInterceptor,grpc.StreamServerInterceptor ,error){
+func(mo *MiddlewareChainOptions) Build()(grpc.UnaryServerInterceptor,grpc.StreamServerInterceptor){
 	var unary grpc.UnaryServerInterceptor
 	var stream grpc.StreamServerInterceptor 
 
@@ -50,5 +50,5 @@ func(mo *MiddlewareChainOptions) Build()(grpc.UnaryServerInterceptor,grpc.Stream
 		stream = grpc_middleware.ChainStreamServer(mo.streamInters...) 
 	}
 
-	return unary,stream,nil
+	return unary,stream
 }
