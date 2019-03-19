@@ -38,7 +38,7 @@ func (mo *MiddlewareChainOptions)UseOAuthMiddleware() *MiddlewareChainOptions {
 	return mo.AddUnary(handleOAuth)
 }
 
-func(mo *MiddlewareChainOptions) Build()(grpc.UnaryServerInterceptor,grpc.StreamServerInterceptor){
+func(mo *MiddlewareChainOptions) BuildMiddleware()(grpc.UnaryServerInterceptor,grpc.StreamServerInterceptor){
 	var unary grpc.UnaryServerInterceptor
 	var stream grpc.StreamServerInterceptor 
 
