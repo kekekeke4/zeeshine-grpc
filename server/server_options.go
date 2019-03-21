@@ -21,8 +21,8 @@ type ServerOptions struct {
 type PublicServiceAction func(grpcServer *grpc.Server)
 
 // Initialize 初始化Options
-func (so *ServerOptions) Initialize(serverPort int, action middleware.MiddlewareChainOptionsAction) *ServerOptions {
-	opts := middleware.NewMiddlewareChainOptions()
+func (so *ServerOptions) Initialize(serverPort int, action middleware.MiddlewareServerChainOptionsAction) *ServerOptions {
+	opts := middleware.NewMiddlewareServerChainOptions()
 	unaryInter, streamInter := action(opts)
 	grpcOpts := make([]grpc.ServerOption, 0, 2)
 	if unaryInter != nil {

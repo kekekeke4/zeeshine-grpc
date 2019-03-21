@@ -9,7 +9,7 @@ import (
 func main() {
 	sb := server.NewServerBuilder()
 	sv := sb.Build(func(so *server.ServerOptions) {
-		so.Initialize(5150, func(mco *middleware.MiddlewareChainOptions) (grpc.UnaryServerInterceptor, grpc.StreamServerInterceptor) {
+		so.Initialize(5150, func(mco *middleware.MiddlewareServerChainOptions) (grpc.UnaryServerInterceptor, grpc.StreamServerInterceptor) {
 			return mco.UsePaincMiddleware().
 				UseOAuthMiddleware().
 				BuildMiddleware()
