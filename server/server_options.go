@@ -34,6 +34,7 @@ func (so *ServerOptions) Initialize(serverPort int, action middleware.Middleware
 	}
 
 	so.grpcServer = grpc.NewServer(grpcOpts...)
+	so.serverPort = serverPort
 	so.initialized = true
 	return so
 }
