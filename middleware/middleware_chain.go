@@ -5,6 +5,8 @@ import (
 	"google.golang.org/grpc"
 )
 
+// the server middleware chain
+
 type MiddlewareServerChainOptionsAction func(mco *MiddlewareServerChainOptions) (grpc.UnaryServerInterceptor, grpc.StreamServerInterceptor)
 
 type MiddlewareServerChainOptions struct {
@@ -32,8 +34,7 @@ func (mo *MiddlewareServerChainOptions) AddStream(delegate ServerStreamRequestDe
 }
 
 func (mo *MiddlewareServerChainOptions) UsePaincMiddleware() *MiddlewareServerChainOptions {
-	return mo.AddUnary(handlePainc).
-		AddStream(hanlderStreamPainc)
+	return mo.AddUnary(handleServerPainc).AddStream(hanlderServerStreamPainc)
 }
 
 func (mo *MiddlewareServerChainOptions) UseOAuthMiddleware() *MiddlewareServerChainOptions {
@@ -120,6 +121,8 @@ func (mo *MiddlewareServerChainOptions) chainStreamServer() grpc.StreamServerInt
 		return handler(srv, stream)
 	}
 }
+
+// the client middleware chain
 
 type MiddlewareClientChainOptionsAction func(mco *MiddlewareClientChainOptions) (grpc.UnaryClientInterceptor, grpc.StreamClientInterceptor)
 
