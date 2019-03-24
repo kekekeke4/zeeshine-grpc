@@ -6,13 +6,13 @@ import (
 )
 
 // Server is the host
-type Server struct {
+type GrpcServer struct {
 	opts *ServerOptions
 	// grpcServer *grpc.Server
 }
 
 // Serve 服务
-func (s *Server) Serve() error {
+func (s *GrpcServer) Serve() error {
 	port := s.opts.GetServerPort()
 	addr := fmt.Sprintf("0.0.0.0:%v", port)
 	ln, err := net.Listen("tcp", addr)

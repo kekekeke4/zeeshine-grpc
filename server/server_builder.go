@@ -10,11 +10,10 @@ func NewServerBuilder() *ServerBuilder {
 	return &ServerBuilder{}
 }
 
-func (sb *ServerBuilder) Build(action ServerBuildAction) *Server {
+func (sb *ServerBuilder) Build(action ServerBuildAction) *GrpcServer {
 	opts := new(ServerOptions)
 	action(opts)
-	server := new(Server)
+	server := new(GrpcServer)
 	server.opts = opts
-	// server.grpcServer=
 	return server
 }
