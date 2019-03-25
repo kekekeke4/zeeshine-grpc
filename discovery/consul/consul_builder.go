@@ -1,5 +1,11 @@
 package consul
 
+import (
+	"fmt"
+
+	"google.golang.org/grpc/resolver"
+)
+
 // import (
 // 	"fmt"
 // 	"github.com/hashicorp/consul/api"
@@ -59,3 +65,31 @@ package consul
 // func (cb *consulBuilder) Scheme() string {
 // 	return "consul"
 // }
+
+type consulBuilder struct {
+}
+
+// impl interface
+func (cb *consulBuilder) Build(target resolver.Target, cc resolver.ClientConn, opts resolver.BuildOption) (resolver.Resolver, error) {
+	host, port, name, err := parseTarget(fmt.Sprintf("%s/%s", target.Authority, target.Endpoint))
+	if err != nil {
+		return nil, err
+	}
+
+	addr := fmt.Sprintf("%s%s", host, port)
+	cr, err := NewConsulResolver(addr, name)
+	if err != nil {
+		return nil, err
+	}
+
+	cr.disableServiceConfig = opts.DisableServiceConfig
+	cr.cc = cc
+	cr.wg.Add(1)
+	go cr.watcher()
+	return cr, nil
+}
+
+// impl interface
+func (cb *consulBuilder) Scheme() string {
+	return "consul"
+}

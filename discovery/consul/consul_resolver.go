@@ -107,9 +107,6 @@ func InitConsulResolver() {
 	resolver.Register(&consulBuilder{})
 }
 
-type consulBuilder struct {
-}
-
 type consulResolver struct {
 	address              string
 	wg                   sync.WaitGroup
@@ -123,17 +120,9 @@ type consulResolver struct {
 	consulClient         *api.Client
 }
 
-// impl interface
-func (cb *consulBuilder) Build(target resolver.Target, cc resolver.ClientConn, opts resolver.BuildOption) (resolver.Resolver, error) {
-	host, port, name, err := parseTarget(fmt.Sprintf("%s/%s", target.Authority, target.Endpoint))
-	if err != nil {
-		return nil, err
-	}
-
-	// new consul client
-	address := fmt.Sprintf("%s%s", host, port)
+func NewConsulResolver(addr string, serviceName string) (*consulResolver, error) {
 	config := api.DefaultConfig()
-	config.Address = address
+	config.Address = addr
 	client, err := api.NewClient(config)
 	if err != nil {
 		return nil, err
@@ -141,24 +130,16 @@ func (cb *consulBuilder) Build(target resolver.Target, cc resolver.ClientConn, o
 
 	ctx, cancel := context.WithCancel(context.Background())
 	cr := &consulResolver{
-		address:              address,
-		serviceName:          name,
-		cc:                   cc,
-		disableServiceConfig: opts.DisableServiceConfig,
-		t:                    time.NewTicker(time.Second),
-		ctx:                  ctx,
-		cancel:               cancel,
-		consulClient:         client,
+		address:     addr,
+		serviceName: serviceName,
+		// cc:                   cc,
+		// disableServiceConfig: opts.DisableServiceConfig,
+		t:            time.NewTicker(time.Second),
+		ctx:          ctx,
+		cancel:       cancel,
+		consulClient: client,
 	}
-
-	cr.wg.Add(1)
-	go cr.watcher()
 	return cr, nil
-}
-
-// impl interface
-func (cb *consulBuilder) Scheme() string {
-	return "consul"
 }
 
 // impl interface
