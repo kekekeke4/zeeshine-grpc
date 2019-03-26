@@ -1,8 +1,6 @@
 package consul
 
 import (
-	"fmt"
-
 	"google.golang.org/grpc/resolver"
 )
 
@@ -71,12 +69,13 @@ type consulBuilder struct {
 
 // impl interface
 func (cb *consulBuilder) Build(target resolver.Target, cc resolver.ClientConn, opts resolver.BuildOption) (resolver.Resolver, error) {
-	host, port, name, err := parseTarget(fmt.Sprintf("%s/%s", target.Authority, target.Endpoint))
-	if err != nil {
-		return nil, err
-	}
+	// host, port, name, err := parseTarget(fmt.Sprintf("%s/%s", target.Authority, target.Endpoint))
+	// if err != nil {
+	// 	return nil, err
+	// }
 
-	addr := fmt.Sprintf("%s%s", host, port)
+	addr := target.Authority //fmt.Sprintf("%s%s", host, port)
+	name := target.Endpoint
 	cr, err := NewConsulResolver(addr, name)
 	if err != nil {
 		return nil, err

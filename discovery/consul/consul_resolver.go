@@ -196,6 +196,8 @@ func parseTarget(target string) (host string, port string, name string, err erro
 		return "", "", "", errMissingAddr
 	}
 
+	fmt.Println(target)
+
 	if !regexConsul.MatchString(target) {
 		return "", "", "", errAddrMisMatch
 	}

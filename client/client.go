@@ -18,7 +18,10 @@ type GrpcClient struct {
 }
 
 func NewGrpcClientUseConsul(scheme string, consulAddr string) (*GrpcClient, error) {
-	return &GrpcClient{registerAddr: consulAddr, scheme: scheme}, nil
+	return &GrpcClient{
+		registerAddr: consulAddr,
+		scheme:       scheme,
+		clientConns:  make(map[string]*grpc.ClientConn)}, nil
 }
 
 func (gc *GrpcClient) GetConn(serviceName string) (*grpc.ClientConn, error) {
