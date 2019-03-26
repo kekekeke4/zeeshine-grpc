@@ -21,7 +21,7 @@ func NewGrpcClientUseConsul(scheme string, consulAddr string) (*GrpcClient, erro
 	return &GrpcClient{registerAddr: consulAddr, scheme: scheme}, nil
 }
 
-func (gc *GrpcClient) ForkConn(serviceName string) (*grpc.ClientConn, error) {
+func (gc *GrpcClient) GetConn(serviceName string) (*grpc.ClientConn, error) {
 	gc.RLock()
 	if conn, ok := gc.clientConns[serviceName]; ok {
 		gc.RUnlock()
