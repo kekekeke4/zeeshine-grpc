@@ -33,6 +33,16 @@ func (mo *MiddlewareServerChainOptions) AddStream(delegate ServerStreamRequestDe
 	return mo
 }
 
+func (mo *MiddlewareServerChainOptions) AddUnaryMiddleware(interceptor grpc.UnaryServerInterceptor) *MiddlewareServerChainOptions {
+	mo.unaryInters = append(mo.unaryInters, interceptor)
+	return mo
+}
+
+func (mo *MiddlewareServerChainOptions) AddStreamMiddleware(interceptor grpc.StreamServerInterceptor) *MiddlewareServerChainOptions {
+	mo.streamInters = append(mo.streamInters, interceptor)
+	return mo
+}
+
 func (mo *MiddlewareServerChainOptions) UsePaincMiddleware() *MiddlewareServerChainOptions {
 	return mo.AddUnary(handleServerPainc).AddStream(hanlderServerStreamPainc)
 }
