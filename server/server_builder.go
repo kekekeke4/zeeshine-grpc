@@ -65,9 +65,13 @@ func (sb *ServerBuilder) Build() *GrpcServer {
 		grpcOpts = append(grpcOpts, grpc.StreamInterceptor(streamInter))
 	}
 
-	server := &GrpcServer{
-		port:    sb.port,
-		grpcSvr: grpc.NewServer(grpcOpts...),
+	grpcSvr := grpc.NewServer(grpcOpts...)
+	for _, s := range sb.services {
+		s.Register(grpcSvr)
 	}
-	return server
+
+	return &GrpcServer{
+		port:    sb.port,
+		grpcSvr: grpcSvr,
+	}
 }
